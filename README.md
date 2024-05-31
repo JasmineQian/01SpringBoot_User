@@ -30,3 +30,6 @@ UserCRUD requests based on SpringBoot + Hibernate with Bearer Token based authen
     values(1,'11','22','user@test.com','$2b$12$HY5QCv3lngW45Icbbx4/gOxq4sY2QpDAwBqNKg.8prRCDt6yOKKNW');
 
     EXIT;
+
+
+mvn spring-boot:run
