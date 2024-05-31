@@ -97,11 +97,14 @@ public class UserRestController {
         userService.updateUser(theUser);
 
         String filter = filterPassword(theUser);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(filter);
+        return ResponseEntity.status(HttpStatus.OK).body(filter);
     }
 
     @DeleteMapping("/user/{email}")
-    public String deleteUser(@PathVariable String email){
+    public ResponseEntity<String> deleteUser(@PathVariable String email, @RequestHeader (name="Authorization") String token) throws JsonProcessingException{
+        if(!email.equals(SecurityUtils.getUserEmailFromToken(token))){
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Sry You cannot delete others.");
+        }
         User theUser = userService.findByEmail(email);
 
         if(theUser == null){
@@ -109,9 +112,7 @@ public class UserRestController {
         }
 
         userService.deleteUser(email);
-
-        return "User " + theUser.getLastName() + " has been deleted";
-
+        return ResponseEntity.status(HttpStatus.OK).body("The user has been deleted.");
     }
 
     private String filterPassword(Object result) throws JsonProcessingException{
